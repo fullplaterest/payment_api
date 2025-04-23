@@ -20,6 +20,12 @@ defmodule PaymentApiWeb.Router do
     get "/", PageController, :home
   end
 
+  scope "/api", PaymentApiWeb do
+    pipe_through [:api]
+
+    post "/qr_code_mercado_pago", MercadoPagoController, :create
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", PaymentApiWeb do
   #   pipe_through :api
