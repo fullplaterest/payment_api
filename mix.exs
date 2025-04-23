@@ -9,7 +9,17 @@ defmodule PaymentApi.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      test_coverage: [
+        tool: ExCoveralls,
+        minimum_coverage: 80
+      ],
+      preferred_cli_env: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.html": :test,
+        "coveralls.github": :test
+      ]
     ]
   end
 
@@ -54,7 +64,13 @@ defmodule PaymentApi.MixProject do
       {:gettext, "~> 0.26"},
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
-      {:bandit, "~> 1.5"}
+      {:bandit, "~> 1.5"},
+      {:tesla, "~> 1.7"},
+      {:hackney, "~> 1.18"},
+      {:mox, "~> 1.0", only: :test},
+      {:decimal, "~> 2.0"},
+      {:excoveralls, "~> 0.18", only: [:test]},
+      {:mimic, "~> 1.7", only: :test}
     ]
   end
 

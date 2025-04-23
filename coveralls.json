@@ -1,0 +1,29 @@
+{
+    "skip_files": [
+      "lib/payment_api.ex",
+      "lib/payment_api/mailer.ex",
+      "lib/payment_api_web.ex",
+      "lib/payment_api_web/endpoint.ex",
+      "lib/payment_api_web/gettext.ex",
+      "lib/payment_api_web/router.ex",
+      "lib/payment_api_web/telemetry.ex",
+      "lib/payment_api_web/components/core_components.ex",
+      "lib/payment_api_web/components/layouts.ex",
+      "lib/payment_api_web/controllers/error_helpers.ex",
+      "lib/payment_api_web/controllers/error_json.ex",
+      "lib/payment_api_web/controllers/page_controller.ex",
+      "lib/payment_api_web/controllers/page_html.ex",
+      "lib/payment_api/application.ex",
+      "lib/payment_api_web/jsons/error_helpers.ex",
+      "lib/payment_api_web/jsons/changeset_json.ex",
+      "lib/payment_api_web/jsons/order_json.ex",
+      "lib/payment_api_web/jsons/product_json.ex",
+      "lib/payment_api_web/jsons/error_json.ex",
+      "lib/payment_api_web/controllers/fallback_controller.ex",
+      "lib/payment_api_web/controllers/error_json.ex",
+      "lib/payment_api_web/controllers/jsons/error_helpers.ex",
+      "lib/payment_api_web/controllers/jsons/error_json.ex",
+      "lib/payment_api/mercado_pago/behaviors/mock.ex",
+      "deps/mox/lib/mox.ex"
+    ]
+}
