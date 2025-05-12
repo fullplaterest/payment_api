@@ -1,0 +1,19 @@
+version: '2'
+services:
+
+  app:
+    image: phoenix:latest
+    build: .
+    command: >
+      /bin/sh -c "mix deps.get && mix compile && iex -S mix phx.server "
+    volumes:
+      - .:/app
+    ports:
+      - "4003:4003"
+    environment:
+      SECRET_KEY_BASE: TtvK69c6zV0DNWeia63fpeIO7rjRrjPc7mOLLjXKPOVhqAiIby/+GKcvcaKC6g62
+    networks:
+      - shared_net
+networks:
+  shared_net:
+    external: true
