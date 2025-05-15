@@ -19,13 +19,13 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
-    name: Test on OTP ${{matrix.otp}} / Elixir ${{matrix.elixir}}
+    name: Elixir Tests
     strategy:
       # Specify the OTP and Elixir versions to use when building
       # and running the workflow steps.
       matrix:
         otp: ["25.0.4"] # Define the OTP version [required]
-        elixir: ["1.14.1"] # Define the elixir version [required]
+        elixir: ["1.16.1"] # Define the elixir version [required]
     steps:
       # Step: Setup Elixir + Erlang image as the base.
       - name: Set up Elixir
@@ -101,3 +101,61 @@ jobs:
      # Step: Execute the coveralls.
       - name: Run Coveralls (GitHub format)
         run: mix coveralls
+
+  deploy_to_ec2:
+    needs: test
+    runs-on: ubuntu-latest
+    env:
+      MIX_ENV: prod
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Elixir
+        uses: erlef/setup-beam@v1
+        with:
+          otp-version: 25.0.4
+          elixir-version: 1.14.1
+
+      - name: Install dependencies
+        run: mix deps.get
+
+      - name: Compile project
+        run: mix compile
+
+      - name: Create release
+        run: mix release
+
+      - name: Archive release
+        run: tar -czf payment_api.tar.gz -C _build/prod/rel/payment_api .
+
+      - name: Upload release to EC2
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "payment_api.tar.gz"
+          target: "~/app"
+
+      - name: Run deploy commands on EC2
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd ~/app
+            tar -xzf payment_api.tar.gz
+            export SECRET_KEY_BASE=${{ secrets.SECRET_KEY_BASE }}
+            export PHX_HOST=${{ secrets.PHX_HOST }}
+            export PORT=4000
+            export MIX_ENV=prod
+            export PHX_SERVER=true
+
+            # Parar release anterior, se estiver rodando
+            ./bin/payment_api stop || true
+
+            # Rodar em background
+            ./bin/payment_api daemon
