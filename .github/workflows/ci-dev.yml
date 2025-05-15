@@ -124,11 +124,6 @@ jobs:
       - name: Compile project
         run: mix compile
 
-      - name: Build assets
-        run: |
-          npm install --prefix assets
-          mix assets.deploy
-
       - name: Create release
         run: mix release
 
