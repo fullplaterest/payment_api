@@ -28,10 +28,7 @@ if config_env() == :prod do
   # variable instead.
   secret_key_base =
     System.get_env("SECRET_KEY_BASE") ||
-      raise """
-      environment variable SECRET_KEY_BASE is missing.
-      You can generate one by calling: mix phx.gen.secret
-      """
+      "uSKZLSp6eF33kUjkg9UB6NnQd6TJ5hTQmpBrKf2OUzyG9kb9I2jkGlgTzXr6aKdP"
 
   host = System.get_env("PHX_HOST") || "example.com"
   port = String.to_integer(System.get_env("PORT") || "4003")
